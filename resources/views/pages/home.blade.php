@@ -22,7 +22,7 @@
     @endif
 
     <!-- Hero Content -->
-    <div class="relative min-h-[700px] flex items-center justify-center px-4">
+    <div class="relative min-h-[790px] flex items-center justify-center px-4">
         <div class="text-center text-white max-w-4xl mx-auto">
             <!-- Animated title -->
             <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100 animate-fade-in-up">
