@@ -4,100 +4,154 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    /**
+     * Tampilkan halaman home/dashboard setelah login
+     */
+    public function home()
+    {
+        return view('pages.home');
+    }
+
+    /**
+     * Tampilkan list user (butuh auth)
+     */
     public function index()
     {
         $users = User::paginate(5);
         return view('account.index', compact('users'));
     }
 
+    /**
+     * Tampilkan form register
+     */
     public function create()
     {
         return view('account.create');
     }
 
+    /**
+     * Simpan user baru (register)
+     */
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:100',
-            'email' => 'required|email|unique:users',
-            'role' => 'required',
-            'password' => 'required',
+            'name'     => 'required|string|max:100',
+            'email'    => 'required|email|unique:users,email',
+            'role'     => 'required|string',
+            'password' => 'required|string|min:8',
         ]);
 
         User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'role' => $request->role,
-            'password' => bcrypt($request->password),
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'role'     => $request->role,
+            'password' => Hash::make($request->password),
         ]);
-
-        return redirect()->route('manage-account.index')->with('success', 'User created successfully.');
+        if(Auth::check()) {
+            return redirect()->route('account.index')->with('success', 'Successfully registered.');
+        }else{
+        return redirect()->route('login')->with('success', 'Registration successful. Please sign in.');
+        }
     }
 
+    /**
+     * Tampilkan form edit user
+     */
     public function edit($id)
     {
         $user = User::findOrFail($id);
         return view('account.edit', compact('user'));
     }
 
+    /**
+     * Update user
+     */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required|max:100',
-            'email' => 'required|email',
-            'role' => 'required',
-            'password' => 'nullable|min:8', // Optional password without confirmation
-        ]);
-    
         $user = User::findOrFail($id);
+
+        $request->validate([
+            'name'     => 'required|string|max:100',
+            'email'    => [
+                'required',
+                'email',
+                Rule::unique('users', 'email')->ignore($user->id),
+            ],
+            'role'     => 'required|string',
+            'password' => 'nullable|string|min:8',
+        ]);
+
         $user->name = $request->name;
         $user->email = $request->email;
         $user->role = $request->role;
-    
-        // Update password only if it is filled
+
         if ($request->filled('password')) {
-            $user->password = bcrypt($request->password);
+            $user->password = Hash::make($request->password);
         }
-    
+
         $user->save();
-    
-        return redirect()->route('manage-account.index')->with('success', 'User updated successfully.');
+
+        return redirect()->route('account.index')->with('success', 'User updated successfully.');
     }
 
+    /**
+     * Hapus user
+     */
     public function destroy($id)
     {
         User::destroy($id);
-        return redirect()->route('manage-account.index')->with('success', 'User deleted successfully.');
+        return redirect()->route('account.index')->with('success', 'User deleted successfully.');
     }
 
+    /**
+     * Tampilkan form login
+     */
+    public function showLoginForm()
+    {
+        // Jika sudah login, redirect ke home
+        if (Auth::check()) {
+            return redirect()->route('pages.home');
+        }
+        return view('pages.login');
+    }
 
-
+    /**
+     * Proses login
+     */
     public function login(Request $request)
     {
+        $request->validate([
+            'name'     => 'required|string',
+            'password' => 'required|string',
+        ]);
+
         $credentials = $request->only('name', 'password');
-    
-        if (Auth::attempt($credentials)) {
-            // Authentication passed, redirect to the intended page
-            return redirect()->intended('home')->with('success', 'Login successful');
+
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            $request->session()->regenerate();
+            // Redirect ke pages.home setelah login berhasil
+            return redirect()->intended(route('pages.home'))->with('success', 'Login successful.');
         }
-    
-        // Authentication failed
-        return redirect()->back()->with('failed', 'Invalid credentials');
+
+        return back()->with('failed', 'Login failed');
     }
 
-            public function logout()
-                    {
-                        //menghapus session Auth
-                        Auth::logout();
-                        //mengarahkan halaman setelah menghapus session
-                        return redirect('/');
-                    }
-}
+    /**
+     * Logout (POST /logout)
+     */
+    public function logout(Request $request)
+    {
+        Auth::logout();
 
-    
-  
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login')->with('success', 'You have been logged out successfully.');
+    }
+}

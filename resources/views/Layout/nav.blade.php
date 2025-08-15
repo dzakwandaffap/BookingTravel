@@ -3,135 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Navbar Example</title>
-    <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-</head>
-<body>
-    <nav class="navbar">
-        <div class="logo">EasyTrip.com</div>
-        <ul>
-    
-                <li>
-            <!-- Sesuaikan route login -->
-            <a href="{{ route('pages.login') }}" style="color: #fff;">Login</a>
-        </li>
-        <li>
-            <!-- Sesuaikan route manage-account.index -->
-            <a href="{{ route('manage-account.index') }}" style="color: #fff;">Account Management</a>
-        </li>
-        <li>
-            <!-- Sesuaikan route booking.index -->
-            <a href="{{ route('booking.index') }}" style="color: #fff;">Booking</a>
-</li>
+    <title>EasyTrip</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary': '#005eb8',
+                        'primary-dark': '#004a96',
+                        'primary-light': '#1a6ec8',
+                    }
+                }
+            }
+        }
+    </script>
 
 
-        </ul>
-       
-   
+</head>
+<body class="font-poppins bg-gray-50 min-h-screen">
+    <!-- Modern Navbar -->
+    <nav class="bg-gradient-to-r from-primary via-primary-light to-primary-dark shadow-xl sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <a href="{{ auth()->check() ? route('pages.home') : route('login') }}" class="flex items-center space-x-2 text-white">
+                        <div class="bg-white bg-opacity-20 p-2 rounded-lg backdrop-blur-sm">
+                            <i class="fas fa-plane text-xl"></i>
+                        </div>
+                        <span class="text-2xl font-bold ">EasyTrip.com</span>
+                    </a>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-1">
+                        @auth
+                            <!-- Menu untuk user yang sudah login -->
+                            <a href="{{ route('pages.home') }}" class="group relative px-4 py-2 text-white hover:text-blue-100 rounded-lg transition-all duration-300 hover:bg-white hover:bg-opacity-10">
+                                <i class="fas fa-home mr-2"></i>
+                                <span class="font-medium">Home</span>
+                                <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></div>
+                            </a>
+
+                            @if(Auth::user()->role === 'admin')
+                            <a href="{{ route('account.index') }}" class="group relative px-4 py-2 text-white hover:text-blue-100 rounded-lg transition-all duration-300 hover:bg-white hover:bg-opacity-10">
+                                <i class="fas fa-users-cog mr-2"></i>
+                                <span class="font-medium">Account Management</span>
+                                <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></div>
+                            </a>
+                            @endif
+
+                            <a href="{{ route('booking.index') }}" class="group relative px-4 py-2 text-white hover:text-blue-100 rounded-lg transition-all duration-300 hover:bg-white hover:bg-opacity-10">
+                                <i class="fas fa-calendar-alt mr-2"></i>
+                                <span class="font-medium">Booking</span>
+                                <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></div>
+                            </a>
+
+                            <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                                @csrf
+                                <button type="submit" class="group relative px-4 py-2 text-white hover:text-red-200 rounded-lg transition-all duration-300 hover:text-red-400 hover:bg-opacity-20 ml-2">
+                                    <i class="fas fa-sign-out-alt mr-2"></i>
+                                    <span class="font-medium">Logout</span>
+                                </button>
+                            </form>
+                        @else
+                            <!-- Menu untuk guest (belum login) -->
+                            <a href="{{ route('login') }}" class="group relative px-6 py-2 text-white hover:text-blue-100 rounded-lg transition-all duration-300 hover:bg-white hover:bg-opacity-10">
+                                <i class="fas fa-sign-in-alt mr-2"></i>
+                                <span class="font-medium">Login</span>
+                                <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></div>
+                            </a>
+                            <a href="{{ route('pages.register') }}" class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white font-medium px-6 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 backdrop-blur-sm">
+                                <i class="fas fa-user-plus mr-2"></i>
+                                <span>Register</span>
+                            </a>
+                        @endauth
+                    </div>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button onclick="toggleMobileMenu()" class="text-white hover:text-blue-100 focus:outline-none focus:text-blue-100 transition-colors duration-300 p-2 rounded-lg hover:bg-white hover:bg-opacity-10">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="md:hidden hidden bg-primary-dark bg-opacity-95 backdrop-blur-sm">
+            <div class="px-2 pt-2 pb-3 space-y-1 border-t border-white border-opacity-20">
+                @auth
+                    <!-- Mobile menu untuk user yang sudah login -->
+                    <a href="{{ route('pages.home') }}" class="flex items-center px-3 py-3 text-white hover:text-blue-100 hover:bg-white hover:bg-opacity-10 rounded-lg transition-all duration-300">
+                        <i class="fas fa-home mr-3 w-5"></i>
+                        <span class="font-medium">Home</span>
+                    </a>
+
+                    @if(Auth::user()->role === 'admin')
+                    <a href="{{ route('account.index') }}" class="flex items-center px-3 py-3 text-white hover:text-blue-100 hover:bg-white hover:bg-opacity-10 rounded-lg transition-all duration-300">
+                        <i class="fas fa-users-cog mr-3 w-5"></i>
+                        <span class="font-medium">Account Management</span>
+                    </a>
+                    @endif
+
+                    <a href="{{ route('booking.index') }}" class="flex items-center px-3 py-3 text-white hover:text-blue-100 hover:bg-white hover:bg-opacity-10 rounded-lg transition-all duration-300">
+                        <i class="fas fa-calendar-alt mr-3 w-5"></i>
+                        <span class="font-medium">Booking</span>
+                    </a>
+
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="flex items-center w-full px-3 py-3 text-white hover:text-red-200 hover:bg-red-500 hover:bg-opacity-20 rounded-lg transition-all duration-300 text-left">
+                            <i class="fas fa-sign-out-alt mr-3 w-5"></i>
+                            <span class="font-medium">Logout</span>
+                        </button>
+                    </form>
+                @else
+                    <!-- Mobile menu untuk guest (belum login) -->
+                    <a href="{{ route('login') }}" class="flex items-center px-3 py-3 text-white hover:text-blue-100 hover:bg-white hover:bg-opacity-10 rounded-lg transition-all duration-300">
+                        <i class="fas fa-sign-in-alt mr-3 w-5"></i>
+                        <span class="font-medium">Login</span>
+                    </a>
+                    <a href="{{ route('pages.register') }}" class="flex items-center px-3 py-3 text-white hover:text-blue-100 hover:bg-white hover:bg-opacity-10 rounded-lg transition-all duration-300">
+                        <i class="fas fa-user-plus mr-3 w-5"></i>
+                        <span class="font-medium">Register</span>
+                    </a>
+                @endauth
+            </div>
+        </div>
     </nav>
 
-    @yield('content')
+
+
+    @if (session('failed'))
+        <div class="alert bg-red-500 text-white text-center px-6 py-4 shadow-lg">
+            <div class="flex items-center justify-center space-x-2">
+                <i class="fas fa-exclamation-circle"></i>
+                <span class="font-medium">{{ session('failed') }}</span>
+            </div>
+        </div>
+    @endif
+
+    <!-- Content Area -->
+    <main>
+        @yield('content')
+    </main>
+
+    <script>
+        // Toggle mobile menu
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileButton = event.target.closest('[onclick="toggleMobileMenu()"]');
+
+            if (!mobileMenu.contains(event.target) && !mobileButton) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    </script>
 </body>
 </html>
-<style>
-        /* Styling Navbar */
-        body {
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
-        }
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #005eb8; /* Tiket.com blue */
-            padding: 15px 20px;
-        }
-        .navbar .logo {
-            color: #fff;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .navbar ul {
-            list-style-type: none;
-            display: flex;
-            margin: 0;
-            padding: 0;
-        }
-        .navbar ul li {
-            margin: 0 15px;
-            position: relative;
-        }
-        .navbar ul li a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: 500;
-            padding: 10px 15px;
-        }
-        .navbar ul li a:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-        }
-        /* Dropdown */
-        .navbar ul li:hover .dropdown {
-            display: block;
-        }
-        .dropdown {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background-color: #fff;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 4px;
-            z-index: 1;
-        }
-        .dropdown a {
-            color: #333;
-            padding: 10px 20px;
-            display: block;
-            white-space: nowrap;
-        }
-        .dropdown a:hover {
-            background-color: #f5f5f5;
-        }
-        /* Search bar */
-        .search-container {
-            display: flex;
-            align-items: center;
-            background-color: #fff;
-            border-radius: 20px;
-            padding: 5px 10px;
-        }
-        .search-container input {
-            border: none;
-            padding: 8px;
-            font-size: 14px;
-            outline: none;
-            border-radius: 20px;
-        }
-        .search-container button {
-            background-color: #ffa300; 
-            border: none;
-            padding: 8px 15px;
-            color: white;
-            border-radius: 20px;
-            cursor: pointer;
-        }
-        .search-container button:hover {
-            background-color: #e08a00;
-        }
-        /* User profile button */
-        .profile-btn {
-            background-color: #ffa300;
-            padding: 10px 20px;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-        }
-        .profile-btn:hover {
-            background-color: #e08a00;
-        }
-    </style>
