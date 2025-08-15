@@ -2,21 +2,18 @@
   "version": 2,
   "builds": [
     {
-      "src": "vite.config.js",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "public/build"
-      }
+      "src": "public/index.php",
+      "use": "@vercel/php"
     },
     {
-      "src": "**/*.php",
-      "use": "@vercel/php"
+      "src": "vite.config.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/index.php"
+      "dest": "/public/index.php"
     }
   ]
 }
