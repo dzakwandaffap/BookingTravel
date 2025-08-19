@@ -61,6 +61,12 @@
                             </a>
                             @endif
 
+                                <a href="{{ route('account.profile') }}" class="group relative px-4 py-2 text-white hover:text-blue-100 rounded-lg transition-all duration-300 hover:bg-white hover:bg-opacity-10">
+                                <i class="fas fa-user-circle mr-2"></i>
+                                <span class="font-medium">Profile</span>
+                                <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></div>
+                            </a>
+
                             <a href="{{ route('booking.index') }}" class="group relative px-4 py-2 text-white hover:text-blue-100 rounded-lg transition-all duration-300 hover:bg-white hover:bg-opacity-10">
                                 <i class="fas fa-calendar-alt mr-2"></i>
                                 <span class="font-medium">Booking</span>
@@ -114,6 +120,11 @@
                         <span class="font-medium">Account Management</span>
                     </a>
                     @endif
+
+                        <a href="{{ route('account.profile') }}" class="flex items-center px-3 py-3 text-white hover:text-blue-100 hover:bg-white hover:bg-opacity-10 rounded-lg transition-all duration-300">
+                        <i class="fas fa-user-circle mr-3 w-5"></i>
+                        <span class="font-medium">Profile</span>
+                    </a>
 
                     <a href="{{ route('booking.index') }}" class="flex items-center px-3 py-3 text-white hover:text-blue-100 hover:bg-white hover:bg-opacity-10 rounded-lg transition-all duration-300">
                         <i class="fas fa-calendar-alt mr-3 w-5"></i>

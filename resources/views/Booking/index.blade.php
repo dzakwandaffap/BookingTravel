@@ -279,7 +279,7 @@
                 <a href="{{ route('booking.edit', $booking->id) }}"
                    class="flex-1 px-4 py-2 text-center text-sm font-medium text-yellow-700 bg-yellow-100 hover:bg-yellow-200 rounded-lg transition-colors duration-200">
                     <i class="fas fa-edit mr-2"></i>Edit
-                </a>
+                </a>    
                 @if(auth()->user()->role === 'admin')
                 <form action="{{ route('booking.destroy', $booking->id) }}" method="POST" class="flex-1">
                     @csrf

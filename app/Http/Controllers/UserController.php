@@ -166,4 +166,53 @@ class UserController extends Controller
 
         return redirect()->route('login')->with('success', 'You have been logged out successfully.');
     }
+
+    /**
+     * Tampilkan halaman profile user yang sedang login
+     */
+    public function profile()
+    {
+        $user = Auth::user();
+        return view('account.profile', compact('user'));
+    }
+
+    /**
+     * Update profile user yang sedang login
+     */
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'name'     => 'required|string|max:100',
+            'email'    => [
+                'required',
+                'email',
+                Rule::unique('users', 'email')->ignore($user->id),
+            ],
+            'current_password' => 'nullable|string',
+            'password' => 'nullable|string|min:8|confirmed',
+        ]);
+
+        // Jika user ingin mengubah password
+        if ($request->filled('current_password') || $request->filled('password')) {
+            // Validasi password lama
+            if (!Hash::check($request->current_password, $user->password)) {
+                return back()->withErrors(['current_password' => 'Current password is incorrect.']);
+            }
+        }
+
+        // Update data user
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        // Update password jika diisi
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        return redirect()->route('account.profile')->with('success', 'Profile updated successfully.');
+    }
 }

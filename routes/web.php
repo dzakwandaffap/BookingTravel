@@ -31,10 +31,13 @@ Route::post('/register', [UserController::class, 'store'])->name('account.store'
 // Protected Routes (harus login)
 // ==========================
 Route::middleware('auth')->group(function () {
-    
     // Dashboard/Home page
     Route::get('/home', [UserController::class, 'home'])->name('pages.home');
-    
+
+    // Profile Routes - PINDAHKAN KELUAR DARI account GROUP
+    Route::get('/profile', [UserController::class, 'profile'])->name('account.profile');
+    Route::put('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
+
     // Account Management Routes
     Route::prefix('account')->name('account.')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
@@ -42,7 +45,7 @@ Route::middleware('auth')->group(function () {
         Route::patch('/{id}', [UserController::class, 'update'])->name('update');
         Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
     });
-    
+
     // Booking Routes
     Route::prefix('booking')->name('booking.')->group(function () {
         Route::get('/', [BookingController::class, 'index'])->name('index');
@@ -52,5 +55,4 @@ Route::middleware('auth')->group(function () {
         Route::patch('/{id}', [BookingController::class, 'update'])->name('update');
         Route::delete('/{id}', [BookingController::class, 'destroy'])->name('destroy');
     });
-    
 });
