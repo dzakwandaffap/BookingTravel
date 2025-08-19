@@ -45,7 +45,7 @@
     @if(auth()->user()->role === 'admin')
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <!-- Total Bookings -->
-        <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+        <div class="bg-gray-800 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-blue-100 text-sm mb-1">Total Bookings</p>
@@ -58,7 +58,7 @@
         </div>
 
         <!-- Total Travelers -->
-        <div class="bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+        <div class="bg-gray-800 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-cyan-100 text-sm mb-1">Total Travelers</p>
@@ -71,7 +71,7 @@
         </div>
 
         <!-- Destinations -->
-        <div class="bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+        <div class="bg-gray-800 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-green-100 text-sm mb-1">Destinations</p>
@@ -84,7 +84,7 @@
         </div>
 
         <!-- Upcoming -->
-        <div class="bg-gradient-to-r from-orange-500 to-pink-500 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+        <div class="bg-gray-800 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-orange-100 text-sm mb-1">Upcoming</p>
@@ -151,7 +151,7 @@
     @if($bookings->count() > 0)
 
     <!-- Desktop Table View -->
-    <div class="hidden md:block bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+    <div class="hidden md:block bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden mb-16">
         <div class="px-6 py-4 bg-gray-50 border-b border-gray-100">
             <div class="flex justify-between items-center">
                 <h3 class="text-lg font-semibold text-gray-800">Bookings Overview</h3>

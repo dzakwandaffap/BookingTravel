@@ -16,6 +16,19 @@
         </div>
     </div>
 
+    {{-- total user --}}
+    <div class="bg-gray-800 rounded-2xl p-6 text-white shadow-lg mb-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 ">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-blue-100 text-sm mb-1">Total Users</p>
+                    <p class="text-3xl font-bold">{{ $users->total() }}</p>
+                </div>
+                <div class="bg-white/20 rounded-full p-3">
+                    <i class="fas fa-user-alt text-2xl"></i>
+                </div>
+            </div>
+        </div>
+
     <!-- Success Alert -->
     @if (session('success'))
     <div id="success-alert" class="bg-green-50 border border-green-200 text-green-700 px-6 py-4 rounded-2xl mb-6 shadow-sm">
@@ -49,11 +62,12 @@
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-search text-gray-400"></i>
                         </div>
+
                         <input type="text"
-                               id="searchInput"
-                               class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-primary transition duration-200"
-                               placeholder="Search by name or email..."
-                               value="{{ request('search') }}">
+                           id="searchInput"
+                           class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-primary transition duration-200"
+                           placeholder="Search customer names..."
+                           value="{{ request('search') }}">
                     </div>
                 </div>
                 <div class="flex gap-3">

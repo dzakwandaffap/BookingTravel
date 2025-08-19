@@ -40,11 +40,6 @@
             <input type="text" class="input-field" name="name" placeholder="Username" value="{{ old('name') }}" required>
             <input type="password" class="input-field" name="password" placeholder="Password" required>
 
-            <div style="margin: 10px 0;">
-                <input type="checkbox" name="remember" id="remember">
-                <label for="remember">Remember me</label>
-            </div>
-
             <button type="submit" class="btn">Sign In</button>
         </form>
 

@@ -21,11 +21,23 @@ class UserController extends Controller
     /**
      * Tampilkan list user (butuh auth)
      */
-    public function index()
-    {
-        $users = User::paginate(5);
-        return view('account.index', compact('users'));
+   public function index(Request $request)
+{
+    $query = User::query();
+
+    // Search filter
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where(function($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%")
+              ->orWhere('email', 'like', "%{$search}%");
+        });
     }
+
+    $users = $query->paginate(5);
+
+    return view('account.index', compact('users'));
+}
 
     /**
      * Tampilkan form register
